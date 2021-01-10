@@ -23,13 +23,18 @@ https://obsproject.com/forum/resources/obs-websocket-remote-control-obs-studio-f
 
 https://obsproject.com/forum/resources/obs-virtualcam.949/
 
+We are using a websocket to control remotely the clips being played via OBS, the software that allows us to use the virtual camera. Once you download OBS, upload a few neutral face clips, a happy/laughing clip and sad faced clip. The script `socket.py` will allow you to connect to OBS and then control the scene names to play.
 
-Python Packages
 
-`pip install` the following packages
+### Python Packages
 
-- https://github.com/Elektordi/obs-websocket-py
+`pip install` from the requirements.txt
 
-Google Cloud 
-- Keys...
+### Google Cloud 
+- Google Vision: We first tried to implement emotion recognition using Google Vision but we were unable to get access properly
+- Dialog Flow: We used Dialogflow to detect when your name has been called. We decided to use machine learning so that the bot can determine when to notify you whether it's your name or your job position being mentioned. The implementation can be found in the branch integration, via simple chat bot for now. 
+
+### OpenCV
+We are using openCV to capture the screen with the video call and detect the emotions of those in the call. This will trigger the OBS clips to play depending on the emotion detected. For example, if everyone in the call were to laugh, this will trigger OBS websocket to start the laughing clip. When the neutral emotion is detected, the OBS websocket will cycle between different clips of your neutral face. 
+
 
