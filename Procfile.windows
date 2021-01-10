@@ -1,0 +1,1 @@
+web: python obs_websocket_scripts/socket.py runserver 0.0.0.0:5000
