@@ -9,6 +9,8 @@ Set up this virtual camera and always look your best for your fellow peers. Our 
 
 ZoomedOut is also great for turning on your camera for your classes to support your professors so they don't have to stare into the voice while teaching. Show your smilling, appreciative self looking your best all from the comfort of your bed. 
 
+![zoomedout](zoomedout.png)
+
 ## Dependencies
 
 Download OBS and the following plugins to use the virtual camera feature
