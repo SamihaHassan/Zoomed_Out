@@ -641,7 +641,7 @@ input[type='checkbox'] {
 
 .navbar-custom .navbar-brand.logo-image img {
     width: 7.4375rem;
-	height: 2rem;
+	
 }
 
 .navbar-custom .navbar-brand.logo-text {
@@ -1354,7 +1354,7 @@ input[type='checkbox'] {
 .basic-4 .image-wrapper {
 	overflow: hidden;
 	margin-bottom: 1.5rem;
-	border-radius: 50%;
+	border-radius: 0%;
 }
 
 .basic-4 .image-wrapper img {
