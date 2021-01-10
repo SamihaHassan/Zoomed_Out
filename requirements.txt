@@ -5,4 +5,7 @@ dialogflow==0.4.0
 python-dotenv==0.8.2
 pusher
 multiprocess
-time
+speechrecognition
+pyttsx3
+pyaudio
+pipwin

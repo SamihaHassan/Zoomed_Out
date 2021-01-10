@@ -9,6 +9,8 @@ import sys
 import time
 from multiprocessing import Process, Value
 import logging
+import speech_recognition as sr
+import pyttsx3
 
 
 import logging
@@ -22,6 +24,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    global p
+    p = Process(target=loop)
+    p.start()
     return render_template('index.html')
 
 
@@ -55,14 +60,13 @@ def detect_intent_texts(project_id, session_id, text, language_code):
 
 
 @app.route('/send_message', methods=['POST'])
-def send_message():
-    message = request.form['message']
+def send_message(message_in):
+    message = message_in
     project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
     fulfillment_text = detect_intent_texts(project_id, "unique", message, 'en')
     response_text = {"message":  fulfillment_text}
     print(os.getenv('DIALOGFLOW_PROJECT_ID'))
     return jsonify(response_text)
-
 
 class socket:
     def __init__(self):
@@ -73,7 +77,7 @@ class socket:
         self.happy = 0
 
     def on_switch(self, message):
-        
+
         print(u"You changed the scene to {}".format(
             message.getSceneName()))
         app.logger.warning(u"You changed the scene to {}".format(
@@ -101,9 +105,43 @@ class socket:
         pass
 
     def check_for_name(self):
-        pass
+        try: 
+            # use the microphone as source for input. 
+            with sr.Microphone() as source2: 
+                
+                # wait for a second to let the recognizer 
+                # adjust the energy threshold based on 
+                # the surrounding noise level 
+                r.adjust_for_ambient_noise(source2, duration=0.2) 
+                
+                #listens for the user's input 
+                audio2 = r.listen(source2) 
+                
+                # Using ggogle to recognize audio 
+                MyText = r.recognize_google(audio2) 
+                MyText = MyText.lower() 
+
+                print("Did you say "+MyText) 
+                app.logger.warning("Did you say "+MyText) 
+                returned = send_message(MyText)
+                app.logger.warning(returned) 
+                # engine = pyttsx3.init('dummy')
+                # engine.say("pay attention")
+                # engine.runAndWait()
+                
+        except sr.RequestError as e: 
+            print("Could not request results; {0}".format(e)) 
+            
+        except sr.UnknownValueError: 
+            print("unknown error occured") 
+            pass
+
+        
 
     def run(self):
+        global r
+        r = sr.Recognizer()
+
         # connect to OBS
         host = "localhost"
         port = 4444
@@ -146,16 +184,15 @@ class socket:
 
         ws.disconnect()
 
+
 def loop():
     app.logger.warning("OBS")
-
     sockobs = socket()
     sockobs.run()
 
+
 # run Flask app
 if __name__ == "__main__":
-    p = Process(target=loop)
-    p.start()
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(host='0.0.0.0', debug=True,use_reloader=False)
+    app.run(host='0.0.0.0', debug=True, use_reloader=False)
     p.join()
